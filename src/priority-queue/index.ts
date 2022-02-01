@@ -110,7 +110,7 @@ export class PriorityQueue<T> {
 			}
 
 			if (right !== null && this.comparatorFn(this.values[swapCandidate], this.values[right]) > 0) {
-				swapCandidate = left;
+				swapCandidate = right;
 			}
 
 			if (swapCandidate !== index) {
