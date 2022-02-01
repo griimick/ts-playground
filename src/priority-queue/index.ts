@@ -8,9 +8,9 @@ export type PriorityQueueParams<T> = {
 export type Optional<T> = T | null;
 
 export class PriorityQueue<T> {
-	values: Array<T> = [];
-	comparatorFn: ComparatorFn<T>;
-	length = 0;
+	private values: Array<T> = [];
+	private comparatorFn: ComparatorFn<T>;
+	private length = 0;
 
 	constructor(params: PriorityQueueParams<T>) {
 		this.comparatorFn = params.comparatorFn;
@@ -55,24 +55,28 @@ export class PriorityQueue<T> {
 		return node;
 	}
 
-	parent(nodeIndex: number) {
+	heapsort () {
+		return Array.from({ length: this.length }, () => this.remove());	
+	}
+
+	private parent(nodeIndex: number) {
 		if (nodeIndex === 0) return null;
 		return (nodeIndex - 1) >>> 1; // right shift by 1 i.e. divide by 2 and round down
 	}
 
-	leftChild(nodeIndex: number) {
+	private leftChild(nodeIndex: number) {
 		const child = (nodeIndex * 2) + 1;
 		if (child >= this.length) return null;
 		return child;
 	}
 
-	rightChild(nodeIndex: number) {
+	private rightChild(nodeIndex: number) {
 		const child = (nodeIndex * 2) + 2;
 		if (child >= this.length) return null;
 		return child;
 	}
 
-	bubbleUp() {
+	private bubbleUp() {
 		let index = this.length - 1;
 
 		while (true) {
@@ -92,7 +96,7 @@ export class PriorityQueue<T> {
 		}
 	}
 
-	bubbleDown() {
+	private bubbleDown() {
 		let index = 0;
 
 		while (true) {
@@ -119,10 +123,6 @@ export class PriorityQueue<T> {
 
 			return;
 		}
-	}
-
-	heapsort () {
-		return Array.from({ length: this.length }, () => this.remove());	
 	}
 }
 
