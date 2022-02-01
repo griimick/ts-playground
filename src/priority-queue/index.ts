@@ -60,6 +60,18 @@ export class PriorityQueue<T> {
 		return (nodeIndex - 1) >>> 1; // right shift by 1 i.e. divide by 2 and round down
 	}
 
+	leftChild(nodeIndex: number) {
+		const child = (nodeIndex * 2) + 1;
+		if (child >= this.length) return null;
+		return child;
+	}
+
+	rightChild(nodeIndex: number) {
+		const child = (nodeIndex * 2) + 2;
+		if (child >= this.length) return null;
+		return child;
+	}
+
 	bubbleUp() {
 		let index = this.length - 1;
 
@@ -67,7 +79,7 @@ export class PriorityQueue<T> {
 			const parent = this.parent(index);
 
 			if (parent !== null && this.comparatorFn(this.values[index], this.values[parent]) < 0) {
-				//console.debug('swapping', this.values[index], this.values[parent]);
+				//console.log('swapping', this.values[index], this.values[parent]);
 				const tmp = this.values[index];
 				this.values[index] = this.values[parent];
 				this.values[parent] = tmp;
@@ -81,7 +93,36 @@ export class PriorityQueue<T> {
 	}
 
 	bubbleDown() {
+		let index = 0;
 
+		while (true) {
+			const left = this.leftChild(index);
+			const right = this.rightChild(index);
+
+			let swapCandidate = index;
+
+			if (left !== null && this.comparatorFn(this.values[swapCandidate], this.values[left]) > 0) {
+				swapCandidate = left;
+			}
+
+			if (right !== null && this.comparatorFn(this.values[swapCandidate], this.values[right]) > 0) {
+				swapCandidate = left;
+			}
+
+			if (swapCandidate !== index) {
+				const tmp = this.values[index];
+				this.values[index] = this.values[swapCandidate];
+				this.values[swapCandidate] = tmp;
+				index = swapCandidate;
+				continue;
+			}
+
+			return;
+		}
+	}
+
+	heapsort () {
+		return Array.from({ length: this.length }, () => this.remove());	
 	}
 }
 
@@ -91,4 +132,4 @@ const pqueue = new PriorityQueue({
 	intialValues: [32, 5, 44, 10, 1],
 });
 
-console.log(pqueue.values);
+console.log(pqueue.heapsort());
