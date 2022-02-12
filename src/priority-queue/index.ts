@@ -2,7 +2,7 @@ export type ComparatorFn<T> = (a: T, b: T) => number;
 
 export type PriorityQueueParams<T> = {
 	comparatorFn: ComparatorFn<T>,
-	intialValues?: Array<T>,
+	initialValues?: Array<T>,
 };
 
 export type Optional<T> = T | null;
@@ -15,8 +15,9 @@ export class PriorityQueue<T> {
 	constructor(params: PriorityQueueParams<T>) {
 		this.comparatorFn = params.comparatorFn;
 
-		if (params.intialValues) {
-			params.intialValues.forEach(value => this.insert(value));
+
+		if (params.initialValues) {
+			params.initialValues.forEach(value => this.insert(value));
 		}
 	}
 
@@ -125,11 +126,3 @@ export class PriorityQueue<T> {
 		}
 	}
 }
-
-
-const pqueue = new PriorityQueue({
-	comparatorFn: (a ,b) => a - b,
-	intialValues: [32, 5, 44, 10, 1],
-});
-
-console.log(pqueue.heapsort());
